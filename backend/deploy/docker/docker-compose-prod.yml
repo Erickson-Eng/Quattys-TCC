@@ -1,0 +1,82 @@
+version: '3.7'
+
+networks:
+  quattys_network:
+
+services:
+  backend:
+    image: ericksontulio/quattys:0.0.1
+    ports:
+      - "80:3000"
+    depends_on:
+      - keycloak
+      - db_backend
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVER_PORT=3000
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db_backend:5432/quattys?currentSchema=public
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - KEYCLOAK_URL=${KEYCLOAK_URL}
+      - REALM=${REALM}
+      - RESOURCE_SERVICE=${RESOURCE_SERVICE}
+      - RESOURCE_SERVICE_CLIENT=${RESOURCE_SERVICE_CLIENT_SECRET}
+    networks:
+      - quattys_network
+    deploy:
+      resources:
+        limits:
+          memory: 700M
+        reservations:
+          memory: 700M
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    command:
+      - start-dev
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - quattys_network
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 200M
+
+  db_backend:
+    image: postgres:14
+    container_name: db_backend
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=quattys
+    networks:
+      - quattys_network
+
+  postgres:
+    image: postgres:14
+    container_name: db_keycloak
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=keycloak
+    networks:
+      - quattys_network
