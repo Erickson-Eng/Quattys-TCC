@@ -1,0 +1,137 @@
+<app-toolbar></app-toolbar>
+
+<div class="container">
+  <div class="card">
+    <div class="tab__info">
+      <h2>Informações do ginásio</h2>
+      <mat-divider></mat-divider>
+    </div>
+    <div class="card__body">
+      <mat-tab-group
+        #tabGroup
+        class="tab__group"
+        (selectedTabChange)="tabChanged($event)"
+      >
+        <mat-tab label="Gym">
+          <form [formGroup]="gymForm" class="form__group" novalidate>
+            <app-image-upload class="picture"
+            (imageSelected)="onImageSelected($event)"
+          ></app-image-upload>
+
+            <mat-form-field appearance="outline" class="form__group__input">
+              <mat-label>Nome</mat-label>
+              <input
+                matInput
+                placeholder="insira nome do ginásio"
+                formControlName="name"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="form__group__input">
+              <mat-label>Descrição curta</mat-label>
+              <input
+                matInput
+                placeholder="insira uma descrição curta"
+                formControlName="shortDescription"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="form__group__input">
+              <mat-label>Regras do ginásio</mat-label>
+              <input
+                matInput
+                placeholder="insira as regras para uso do ginásio"
+                formControlName="rules"
+              />
+            </mat-form-field>
+            <div class="chips">
+              <h3>Esportes Praticaveis</h3>
+              <mat-divider></mat-divider>
+              <mat-chip-listbox multiple>
+                <mat-chip-option color="accent" *ngFor="let opcao of sports" [ngClass]="{ 'selecionado': isSelecionado(opcao) }" (click)="toggleSelecao(opcao)">
+                  {{ opcao.name }}
+                </mat-chip-option>
+              </mat-chip-listbox>
+            </div>
+
+          </form>
+        </mat-tab>
+        <mat-tab
+          label="Address"
+          class="tab__group"
+          [disabled]="!isGymFormValid()"
+        >
+          <div [formGroup]="gymForm">
+            <form formGroupName="locale" class="form__group" novalidate>
+              <mat-form-field appearance="outline" class="form__group__input">
+                <mat-label>Rua</mat-label>
+                <input
+                  matInput
+                  placeholder="Insira a rua do ginásio"
+                  formControlName="street"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form__group__input">
+                <mat-label>Numero</mat-label>
+                <input
+                  matInput
+                  placeholder="Insira o numero do ginásio"
+                  formControlName="number"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form__group__input">
+                <mat-label>Cidade</mat-label>
+                <input
+                  matInput
+                  placeholder="Insira nome da cidade"
+                  formControlName="city"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form__group__input">
+                <mat-label>Estado</mat-label>
+                <input
+                  matInput
+                  placeholder="Insira nome do estado"
+                  formControlName="state"
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="form__group__input">
+                <mat-label>Cep/Código Postal</mat-label>
+                <input
+                  matInput
+                  placeholder="Insira o cep"
+                  formControlName="zipCode"
+                />
+              </mat-form-field>
+            </form>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="actions">
+        <button
+          mat-raised-button
+          (click)="previousTab()"
+          [disabled]="selectedTabIndex === 0"
+        >
+          Voltar
+        </button>
+        <button
+          mat-raised-button
+          (click)="nextTab()"
+          [disabled]="!tabIsValid()"
+          *ngIf="!validForm(); else botaoSalvar"
+        >
+          Próximo
+        </button>
+        <ng-template #botaoSalvar>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!gymForm.valid"
+            (click)="submitForm()"
+          >
+            Criar
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

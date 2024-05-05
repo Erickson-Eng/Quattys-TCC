@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="container__card">
+    <div class="container__card__logo">
+      <img src="../../../../assets/images/Logo_300px.svg" alt="logo" />
+
+      <div class="container__card__logo__status">
+        <h1 class="divisor-horizontal">Iniciar sessão</h1>
+        <app-theme-switcher></app-theme-switcher>
+      </div>
+    </div>
+    <form [formGroup]="loginForm" class="container__card__form">
+      <mat-form-field appearance="outline" class="input__field">
+        <mat-label>Username</mat-label>
+        <input
+          matInput
+          formControlName="username"
+          placeholder="insert you username"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="input__field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          placeholder="insert you password"
+          formControlName="password"
+          required
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button
+        type="submit"
+        [disabled]="!isUserFormValid()"
+        mat-raised-button
+        color="primary"
+        (click)="submitForm()"
+      >
+        Login
+      </button>
+    </form>
+    <div class="container__card__link">
+      <button mat-button routerLink="/account/create" type="button">
+        Criar conta
+      </button>
+      <button mat-button routerLink="/account/recovery" type="button">
+        Recuperar senha
+      </button>
+    </div>
+  </div>
+</div>

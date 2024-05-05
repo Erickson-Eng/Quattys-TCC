@@ -1,0 +1,57 @@
+.container{
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 100vh;
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+
+  .profile{
+    display: flex;
+    flex-direction: column;
+
+    &_actions{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      &_configs{
+        display: flex;
+        justify-content: space-between;
+        button{
+          width: 48%;
+        }
+      }
+    }
+  }
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+}
+
+.image-container {
+  flex: 0 0 auto;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.text-container {
+  flex: 1 1 auto;
+}
+
+.profile-picture{
+  border-radius: 10px;
+  border: 2px solid #c9c9c9;
+}
+
+.card-members{
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.mat-mdc-card{
+  border-radius: 10px;
+  border: 1px solid #c9c9c9;
+}

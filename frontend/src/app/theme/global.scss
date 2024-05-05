@@ -1,0 +1,74 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+
+$my-theme-typography: mat.define-typography-config(
+  $headline-1: mat.define-typography-level(7rem, 7rem, 300),
+  $headline-2: mat.define-typography-level(3.5rem, 3.5rem, 400),
+  $headline-3: mat.define-typography-level(2.8125rem, 3rem, 400),
+  $headline-4: mat.define-typography-level(2.125rem, 2.5rem, 400),
+  $headline-5: mat.define-typography-level(1.5rem, 2rem, 400),
+  $headline-6: mat.define-typography-level(1.25rem, 2rem, 500),
+  $subtitle-1: mat.define-typography-level(1rem, 1.75rem, 400),
+  $subtitle-2: mat.define-typography-level(0.9375rem, 1.5rem, 400),
+  $body-1: mat.define-typography-level(0.875rem, 1.5rem, 500),
+  $body-2: mat.define-typography-level(0.875rem, 1.25rem, 400),
+  $caption: mat.define-typography-level(0.75rem, 1.25rem, 400),
+  $button: mat.define-typography-level(0.875rem, 0.875rem, 500)
+);
+
+
+$md-dark-theme-text: #ffffff;
+$md-dark-theme-background: #1C1B1F;
+$md-dark-theme-surface: #1e1e1e;
+$md-dark-theme-on-primary: #ffffff;
+$md-dark-theme-on-secondary: #000000;
+$md-dark-theme-on-background: #c4c4c4;
+$md-dark-theme-on-surface: #ffffff;
+
+
+$md-light-theme-background: #c4c4c4;
+$md-light-theme-text: #333333;
+$md-light-theme-on-secondary: #c8c8c8;
+
+
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$blue-palette, 900),
+      accent: mat.define-palette(mat.$light-blue-palette, 800),
+    ),
+    typography: $my-theme-typography,
+    density: 0,
+  )
+);
+
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$deep-purple-palette, 400),
+      accent: mat.define-palette(mat.$indigo-palette, 500),
+    ),
+    text: (
+      primary: $md-dark-theme-text,
+    ),
+    background: (
+      primary: $md-dark-theme-background,
+      secondary: $md-dark-theme-surface,
+    ),
+    on: (
+      primary: $md-dark-theme-on-primary,
+      secondary: $md-dark-theme-on-secondary,
+      background: $md-dark-theme-on-background,
+      surface: $md-dark-theme-on-surface,
+    ),
+    typography: $my-theme-typography,
+    density: 0,
+  )
+);
+
+@include mat.all-component-colors($light-theme);
+
+.dark-mode {
+  @include mat.all-component-colors($dark-theme);
+}

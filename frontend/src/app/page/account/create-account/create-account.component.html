@@ -1,0 +1,265 @@
+<div class="container">
+  <div class="card">
+    <div class="card__logo">
+      <a routerLink="/account/auth">
+        <img src="../../../../assets/images/Logo_300px.svg" alt="logo" />
+      </a>
+    </div>
+    <div class="card__form">
+      <mat-tab-group
+        class="tab__group"
+        #tabGroup
+        (selectedTabChange)="tabChanged($event)"
+      >
+        <mat-tab label="Usuário">
+          <div class="header_form">
+            <h1>Informações da conta</h1>
+            <mat-divider></mat-divider>
+          </div>
+          <form [formGroup]="userForm" novalidate class="form__group">
+            <mat-form-field class="form__group__input" appearance="outline">
+              <input
+                matInput
+                formControlName="username"
+                placeholder="Nome de usuário"
+                required
+              />
+            </mat-form-field>
+            <div
+              class="mensagem__erro"
+              *ngIf="
+                userForm.get('username')?.errors &&
+                userForm.get('username')?.touched
+              "
+            >
+              O username é um campo obrigatorio
+            </div>
+            <mat-form-field class="form__group__input" appearance="outline">
+              <input
+                matInput
+                formControlName="email"
+                placeholder="Endereço de e-mail"
+                required
+              />
+            </mat-form-field>
+            <div
+              class="mensagem__erro"
+              *ngIf="
+                userForm.get('email')?.errors && userForm.get('email')?.touched
+              "
+            >
+              O email é um campo obrigatorio
+            </div>
+
+            <mat-form-field class="form__group__input" appearance="outline">
+              <input
+                matInput
+                formControlName="password"
+                type="password"
+                placeholder="Senha"
+                required
+              />
+            </mat-form-field>
+            <div
+              class="mensagem__erro"
+              *ngIf="
+                userForm.get('password')?.errors &&
+                userForm.get('password')?.touched
+              "
+            >
+              A senha é um campo obrigatorio.
+            </div>
+
+            <mat-form-field class="form__group__input" appearance="outline">
+              <mat-label>Tipo de conta</mat-label>
+              <mat-select formControlName="profileType">
+                <mat-option
+                  *ngFor="let option of optionsAccount"
+                  [value]="option.value"
+                  >{{ option.label }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </mat-tab>
+        <mat-tab label="Perfil" [disabled]="!isUserFormValid()">
+          <div class="header_form">
+            <h1>Informações pessoais</h1>
+            <mat-divider></mat-divider>
+          </div>
+          <div [formGroup]="userForm">
+            <form formGroupName="profile" novalidate class="form__group">
+              <mat-form-field class="form__group__input" appearance="outline">
+                <input
+                  matInput
+                  formControlName="firstName"
+                  placeholder="Informe seu primeiro nome"
+              /></mat-form-field>
+              <div
+                class="mensagem__erro"
+                *ngIf="
+                  userForm.get('profile.firstName')?.errors &&
+                  userForm.get('profile.firstName')?.touched
+                "
+              >
+                O nome é um campo obrigatorio
+              </div>
+              <mat-form-field class="form__group__input" appearance="outline">
+                <input
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Informe seu primeiro sobrenome"
+                />
+              </mat-form-field>
+              <div
+                class="mensagem__erro"
+                *ngIf="
+                  userForm.get('profile.lastName')?.errors &&
+                  userForm.get('profile.lastName')?.touched
+                "
+              >
+                O sobrenome é um campo obrigatorio
+              </div>
+              <mat-form-field class="form__group__input" appearance="outline">
+                <input
+                  matInput
+                  formControlName="socialName"
+                  placeholder="Nos informe um nome social se desejar"
+                />
+              </mat-form-field>
+              <mat-form-field class="form__group__input" appearance="outline">
+                <input
+                  matInput
+                  formControlName="cpf"
+                  placeholder="Insira o CPF"
+                  required
+                />
+              </mat-form-field>
+              <div
+                class="mensagem__erro"
+                *ngIf="
+                  userForm.get('profile.cpf')?.errors &&
+                  userForm.get('profile.cpf')?.touched
+                "
+              >
+                O sobrenome é um campo obrigatorio
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+        <mat-tab label="Endereço" [disabled]="!isProfileFormValid()">
+          <div class="header_form">
+            <h1>Endereço pessoal</h1>
+            <mat-divider></mat-divider>
+          </div>
+          <div [formGroup]="userForm">
+            <div formGroupName="profile">
+              <form formGroupName="locale" novalidate class="form__group">
+                <mat-form-field class="form__group__input" appearance="outline">
+                  <input matInput formControlName="street" placeholder="Rua" />
+                </mat-form-field>
+                <div
+                  class="mensagem__erro"
+                  *ngIf="
+                    userForm.get('profile.locale.street')?.errors &&
+                    userForm.get('profile.locale.street')?.touched
+                  "
+                >
+                  A rua é um campo obrigatorio
+                </div>
+                <mat-form-field class="form__group__input" appearance="outline">
+                  <input
+                    matInput
+                    formControlName="number"
+                    placeholder="Número"
+                  />
+                </mat-form-field>
+                <div
+                  class="mensagem__erro"
+                  *ngIf="
+                    userForm.get('profile.locale.number')?.errors &&
+                    userForm.get('profile.locale.number')?.touched
+                  "
+                >
+                  É necessário fornecer o número da residencia.
+                </div>
+                <mat-form-field class="form__group__input" appearance="outline">
+                  <input matInput formControlName="city" placeholder="Cidade" />
+                </mat-form-field>
+                <div
+                  class="mensagem__erro"
+                  *ngIf="
+                    userForm.get('profile.locale.city')?.errors &&
+                    userForm.get('profile.locale.city')?.touched
+                  "
+                >
+                  É necessário fornecer a cidade da residencia.
+                </div>
+                <mat-form-field class="form__group__input" appearance="outline">
+                  <input
+                    matInput
+                    formControlName="state"
+                    placeholder="Estado"
+                  />
+                </mat-form-field>
+                <div
+                  class="mensagem__erro"
+                  *ngIf="
+                    userForm.get('profile.locale.state')?.errors &&
+                    userForm.get('profile.locale.state')?.touched
+                  "
+                >
+                  É necessário fornecer o Estado da residencia.
+                </div>
+                <mat-form-field class="form__group__input" appearance="outline">
+                  <input
+                    matInput
+                    formControlName="zipCode"
+                    placeholder="Código postal/Cep"
+                  />
+                </mat-form-field>
+                <div
+                  class="mensagem__erro"
+                  *ngIf="
+                    userForm.get('profile.locale.zipCode')?.errors &&
+                    userForm.get('profile.locale.zipCode')?.touched
+                  "
+                >
+                  É necessário fornecer a cep da residencia.
+                </div>
+              </form>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="actions">
+        <button
+          mat-raised-button
+          (click)="previousTab()"
+          [disabled]="selectedTabIndex === 0"
+        >
+          Voltar
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="nextTab()"
+          [disabled]="!tabIsValid()"
+          *ngIf="!validForm(); else botaoSalvar"
+        >
+          Próximo
+        </button>
+        <ng-template #botaoSalvar>
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="!userForm.valid"
+            (click)="submitForm()"
+          >
+            Criar
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
